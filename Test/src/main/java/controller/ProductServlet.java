@@ -15,28 +15,8 @@ import java.util.List;
 
 @WebServlet(name = "ProductServlet", value = "/ProductServlet")
 public class ProductServlet extends HttpServlet {
-  package controller;
-
-import model.Category;
-import model.Product;
-import service.ProductDAO;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
-import java.util.List;
-
-    @WebServlet(urlPatterns = "/products")
-    public class ProductServlet extends HttpServlet {
-
         ProductDAO productDAO = new ProductDAO();
-
+        CategoryDAO categoryDAO = new CategoryDAO();
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             String action = req.getParameter("action");
@@ -90,7 +70,7 @@ import java.util.List;
         }
 
         private void editGet(HttpServletRequest req, HttpServletResponse resp) {
-            List<Category> categories = productDAO.selectAllCategory();
+            List<Category> categories = categoryDAO.selectAll();
             req.setAttribute("category", categories);
             int id = Integer.parseInt(req.getParameter("id"));
             Product product = productDAO.select(id);
@@ -104,7 +84,7 @@ import java.util.List;
 
         }
         private void createGet(HttpServletRequest req, HttpServletResponse resp) {
-            List<Category> categories = productDAO.selectAllCategory();
+            List<Category> categories = categoryDAO.selectAll();
             req.setAttribute("category", categories);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("product/create.jsp");
             try {
@@ -188,22 +168,6 @@ import java.util.List;
             }
         }
     }
-package controller;
-
-import model.Category;
-import model.Product;
-import service.ProductDAO;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
-import java.util.List;
 
     @WebServlet(urlPatterns = "/products")
     public class ProductServlet extends HttpServlet {
@@ -320,7 +284,7 @@ import java.util.List;
             int idCategory = Integer.parseInt(req.getParameter("category"));
             try{
                 Product product = new Product(id, name, price, quantity, color, describeProduct);
-                productDAO.edit(product,idCategory);
+                productDAO.update(product,idCategory);
                 List<Product> products = productDAO.selectAll();
                 req.setAttribute("products", products);
 

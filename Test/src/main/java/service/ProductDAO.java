@@ -23,6 +23,7 @@ public class ProductDAO {
                                                         "JOIN category c ON c.id = product.Category\n" +
                                                         "WHERE product.name like ?  ";
 
+
     public void insert(Product product, int idCategory) throws SQLException {
         System.out.println(INSERT_PRODUCT_SQL);
         try (Connection connection = myConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PRODUCT_SQL)) {
@@ -38,6 +39,20 @@ public class ProductDAO {
         }
     }
 
+    public void edit(Product product, int idCategory) throws SQLException{
+        System.out.println(INSERT_PRODUCT_SQL);
+        try (Connection connection = myConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PRODUCT_SQL)) {
+            preparedStatement.setString(1, product.getProductName());
+            preparedStatement.setDouble(2, product.getPrice());
+            preparedStatement.setInt(3, product.getQuantity());
+            preparedStatement.setString(4, product.getColor());
+            preparedStatement.setInt(5, idCategory);
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public Product select(int id) {
         Product product = null;
